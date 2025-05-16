@@ -6,7 +6,7 @@ Example usage
 
     flatten.py [-h] urls [urls ...]
 
-Example repository
+Given this Example repository
 
     example-repo
     ├── folder
@@ -16,7 +16,7 @@ Example repository
     │       └── hello.py
     └── README.md
 
-The expected output will become
+The output is
 
     example-repo.folder.file.txt
     example-repo.folder.subfolder.hellp.txt
