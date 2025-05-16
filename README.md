@@ -2,9 +2,6 @@
 
 Flattens out one or more GitHub repositories, and converts them into `.txt` files that can be fed to LLMs
 
-Example usage
-
-    flatten.py [-h] urls [urls ...]
 
 Given this Example repository
 
@@ -26,3 +23,20 @@ The output is
 **Features**
 
 - Blacklist folders, files and extensions
+
+
+## How to use
+
+Download the repo, create and use the virtual environment
+
+``` bash
+    git clone https://github.com/enfff/repo.flattener
+    cd repo.flattener/
+    python3 -m venv .venv
+    source .venv/bin/activate
+    pip3 install -r requirements.txt
+```
+
+Example usage
+
+    flatten.py [-h] urls [urls ...]
