@@ -18,9 +18,9 @@ Example repository
 
 The expected output will become
 
-    example-repo.folder.file.py
-    example-repo.folder.subfolder.hellp.py
-    example-repo.README.md
+    example-repo.folder.file.txt
+    example-repo.folder.subfolder.hellp.txt
+    example-repo.README.txt
 
 
 **Features**
