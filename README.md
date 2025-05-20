@@ -23,18 +23,18 @@ The output is
 **Features**
 
 - Blacklist folders, files and extensions
-
+- Process local and/or remote repositories
 
 ## How to use
 
 Download the repo, create and use the virtual environment
 
 ``` bash
-    git clone https://github.com/enfff/repo.flattener
-    cd repo.flattener/
-    python3 -m venv .venv
-    source .venv/bin/activate
-    pip3 install -r requirements.txt
+git clone https://github.com/enfff/repo.flattener
+cd repo.flattener/
+python3 -m venv .venv
+source .venv/bin/activate
+pip3 install -r requirements.txt
 ```
 
 Example usage
