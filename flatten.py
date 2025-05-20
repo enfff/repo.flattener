@@ -6,22 +6,29 @@ from pathlib import Path
 from urllib.parse import urlparse
 
 # Configurable blacklists
-FOLDER_BLACKLIST = {'.git', '.vscode', '__pycache__', '.idea', 'node_modules', '.github'}
-EXTENSION_BLACKLIST = {'.xml', '.exe', '.bin', '.jpg', '.jpeg', '.png', '.gif', '.zip', '.tar', '.gz', '.pdf'}
-FILE_BLACKLIST = {'LICENSE', '__init__.py'}
+FOLDER_BLACKLIST = {'.git', '.vscode', '__pycache__',
+                    '.idea', 'node_modules', '.github'}
+EXTENSION_BLACKLIST = {'.xml', '.exe', '.bin', '.jpg', '.jpeg',
+                       '.png', '.gif', '.zip', '.tar', '.gz', '.pdf', '.dae', '.sdf',
+                       '.ttf', '.gitignore', '.h', '.osf'}
+FILE_BLACKLIST = {'LICENSE', '__init__.py',
+                  'requirements.txt', 'CONTRIBUTING.md', 'CHANGELOG', 'CMakeLists.txt', 'CHANGELOG.rst'}
 
 # Destination base folder
 os.makedirs(os.path.expanduser('~/Documents/Flattened'), exist_ok=True)
 DEST_BASE = os.path.expanduser('~/Documents/Flattened')
 
+
 def clone_repo(repo_url):
-    repo_name = urlparse(repo_url).path.strip('/').split('/')[-1].replace('.git', '')
+    repo_name = urlparse(repo_url).path.strip(
+        '/').split('/')[-1].replace('.git', '')
     temp_dir = tempfile.mkdtemp()
     dest_dir = os.path.join(DEST_BASE, repo_name)
     print(f"Cloning {repo_url} to {temp_dir}...")
 
     try:
-        subprocess.run(['git', 'clone', '--depth', '1', repo_url, temp_dir], check=True)
+        subprocess.run(['git', 'clone', '--depth', '1',
+                       repo_url, temp_dir], check=True)
     except subprocess.CalledProcessError:
         print(f"Error cloning {repo_url}")
         return
@@ -29,6 +36,7 @@ def clone_repo(repo_url):
     os.makedirs(dest_dir, exist_ok=True)
     process_repo_files(temp_dir, dest_dir, repo_name)
     shutil.rmtree(temp_dir)
+
 
 def process_repo_files(source_root, dest_root, repo_name):
     for root, dirs, files in os.walk(source_root):
@@ -42,10 +50,10 @@ def process_repo_files(source_root, dest_root, repo_name):
             # Skip file if its extension is blacklisted
             if file_path.suffix.lower() in EXTENSION_BLACKLIST:
                 continue
-            
+
             if file in FILE_BLACKLIST:
                 continue
-            
+
             # Skips empty files
             if file_path.stat().st_size == 0:
                 continue
@@ -61,15 +69,26 @@ def process_repo_files(source_root, dest_root, repo_name):
             except Exception as e:
                 print(f"Skipping file {file_path}: {e}")
 
+
 def main():
     import argparse
-    parser = argparse.ArgumentParser(description="Flatten GitHub repos into .txt files for LLM ingestion.")
-    parser.add_argument("urls", nargs="+", help="One or more GitHub repo URLs.")
+    parser = argparse.ArgumentParser(
+        description="Flatten GitHub repos into .txt files for LLM ingestion.")
+    parser.add_argument("urls", nargs="*",
+                        help="One or more GitHub repo URLs.")
+    parser.add_argument("-r", "--local-repo", type=str, help="Path to a local repository to flatten instead of cloning from a URL.")
     args = parser.parse_args()
+
+    if args.local_repo:
+        repo_path = os.path.abspath(args.local_repo)
+        repo_name = os.path.basename(repo_path.rstrip("/"))
+        dest_dir = os.path.join(DEST_BASE, repo_name)
+        os.makedirs(dest_dir, exist_ok=True)
+        process_repo_files(repo_path, dest_dir, repo_name)
 
     for url in args.urls:
         clone_repo(url)
 
+
 if __name__ == "__main__":
     main()
-
