@@ -16,7 +16,7 @@ Given this Example repository
 The output is
 
     example-repo.folder.file.txt
-    example-repo.folder.subfolder.hellp.txt
+    example-repo.folder.subfolder.hello.txt
     example-repo.README.txt
 
 
