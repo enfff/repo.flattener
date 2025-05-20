@@ -39,4 +39,4 @@ Download the repo, create and use the virtual environment
 
 Example usage
 
-    flatten.py [-h] urls [urls ...]
+	flatten.py [-h] [-r LOCAL_REPO] [urls ...]
